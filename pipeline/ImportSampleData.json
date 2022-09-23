@@ -30,7 +30,9 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFileName": "*"
+							"wildcardFolderPath": "azure-data-factory-by-example\u0002main/SampleData/SweetTreats",
+							"wildcardFileName": "*",
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings",
