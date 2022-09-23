@@ -1,0 +1,20 @@
+{
+	"name": "SourceDataset_fox",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adfBlob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "data"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}
