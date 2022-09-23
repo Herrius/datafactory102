@@ -5,6 +5,9 @@
 			"referenceName": "adfBlob",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "chapter 2"
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {

@@ -1,0 +1,19 @@
+{
+	"name": "ASQL_dboSalesLoad",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AdfByExample",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "chapter 3"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Sales_LOAD"
+		}
+	}
+}
