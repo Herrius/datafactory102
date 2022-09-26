@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Lookup  RunSeqNo",
+						"activity": "RunSeqNo",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -32,7 +32,7 @@
 							{
 								"name": "RunSeqNo",
 								"value": {
-									"value": "@activity('Lookup  RunSeqNo').output.firstRow.RunSeqNo",
+									"value": "@variables('RunSeqNo')",
 									"type": "Expression"
 								}
 							}
@@ -109,7 +109,7 @@
 						},
 						"RowsCopied": {
 							"value": {
-								"value": "@activity('Imported sales data').output.rpwCopied",
+								"value": "@activity('Imported sales data').output.rowsCopied",
 								"type": "Expression"
 							},
 							"type": "Int32"
@@ -123,14 +123,14 @@
 						},
 						"RunEndDateTime": {
 							"value": {
-								"value": "@activity('Imported sales data').output.runEndDateTime",
+								"value": "@utcnow()",
 								"type": "Expression"
 							},
 							"type": "DateTime"
 						},
 						"RunSeqNo": {
 							"value": {
-								"value": "@activity('Lookup  RunSeqNo').output.firstRow.RunSeqNo",
+								"value": "@variables('RunSeqNo')",
 								"type": "Expression"
 							},
 							"type": "Int32"
@@ -168,7 +168,10 @@
 						"storedProcedureParameters": {
 							"Comments": {
 								"type": "String",
-								"value": null
+								"value": {
+									"value": "@concat('Pipeline ',pipeline().Pipeline,' executed in ',pipeline().DataFactory)",
+									"type": "Expression"
+								}
 							},
 							"PipelineRunId": {
 								"type": "Guid",
@@ -193,8 +196,34 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "RunSeqNo",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup  RunSeqNo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "RunSeqNo",
+					"value": {
+						"value": "@string(activity('Lookup  RunSeqNo').output.firstRow.RunSeqNo)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"RunSeqNo": {
+				"type": "String",
+				"defaultValue": "-1"
+			}
+		},
 		"folder": {
 			"name": "Chapter 4"
 		},
