@@ -12,7 +12,7 @@
 			"connectionString": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "adfbyexample-kvp",
+					"referenceName": "AzureKeyVaul1",
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "@linkedService().ConnectionSecret"
