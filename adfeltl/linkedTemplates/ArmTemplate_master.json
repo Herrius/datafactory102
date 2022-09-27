@@ -19,6 +19,18 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'adfBlob'"
 		},
+		"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ConnectionSecret"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://adfbyexample-kvp.vault.azure.net/"
+		},
+		"adfbyexamplekv_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "StorageAccountConnectionString"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -54,6 +66,15 @@
 					},
 					"adfBlob_connectionString": {
 						"value": "[parameters('adfBlob_connectionString')]"
+					},
+					"AzureKeyVault1_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AnyBlobStorage_properties_typeProperties_connectionString_secretName')]"
+					},
+					"adfbyexamplekv_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('adfbyexamplekv_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
