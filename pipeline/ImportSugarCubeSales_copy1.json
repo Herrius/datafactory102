@@ -65,8 +65,8 @@
 						"referenceName": "ABS_JSON_adfetl",
 						"type": "DatasetReference",
 						"parameters": {
-							"Directory": ".",
-							"File": "."
+							"Container": "out",
+							"LinkedServiceConnectionSecret": "StorageAccountConnectionString"
 						}
 					}
 				],
