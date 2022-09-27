@@ -12,10 +12,13 @@
 			"connectionString": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "AzureKeyVaul1",
+					"referenceName": "AzureKeyVault1",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "@linkedService().ConnectionSecret"
+				"secretName": {
+					"value": "@linkedService().ConnectionSecret",
+					"type": "Expression"
+				}
 			}
 		}
 	}
