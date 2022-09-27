@@ -41,11 +41,11 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": {
-								"value": "@variables('WildcardFolderPath')",
+								"value": "@pipeline().parameters.WildcardFolderPath",
 								"type": "Expression"
 							},
 							"wildcardFileName": {
-								"value": "@variables('WildcardFileName')",
+								"value": "@pipeline().parameters.WildcardFileName",
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
