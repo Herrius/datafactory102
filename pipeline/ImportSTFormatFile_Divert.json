@@ -1,5 +1,5 @@
 {
-	"name": "ImportSTFormatFile",
+	"name": "ImportSTFormatFile_Divert",
 	"properties": {
 		"activities": [
 			{
@@ -62,6 +62,24 @@
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AnyBlobStorage",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"ConnectionSecret": "StorageAccountConnectionString"
+								}
+							},
+							"path": "output/errors"
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
