@@ -1,0 +1,52 @@
+{
+	"name": "SophisticatedControl",
+	"properties": {
+		"activities": [
+			{
+				"name": "Activity 1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Name",
+					"value": "@string(int('not an int'))"
+				}
+			},
+			{
+				"name": "Activity 2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Activity 1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "Activity 3",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Activity 2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			}
+		],
+		"variables": {
+			"Name": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Chapter 6"
+		},
+		"annotations": []
+	}
+}
