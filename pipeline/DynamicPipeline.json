@@ -14,7 +14,7 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SugarCube",
+						"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
 						"WildcardFileName": "*.csv"
 					}
 				}
