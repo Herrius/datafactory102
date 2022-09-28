@@ -21,9 +21,22 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Activity 4",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Name",
+					"value": {
+						"value": "@string(float('It is not float'))",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Activity 3",
@@ -32,11 +45,29 @@
 					{
 						"activity": "Activity 2",
 						"dependencyConditions": [
+							"Skipped",
 							"Succeeded"
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Name",
+					"value": {
+						"value": "@string(bool('It is not bool'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Activity 4",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Name",
+					"value": "@string(int('not an int'))"
+				}
 			}
 		],
 		"variables": {
