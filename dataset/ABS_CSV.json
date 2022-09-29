@@ -33,7 +33,7 @@
 				"container": "out"
 			},
 			"columnDelimiter": ",",
-			"escapeChar": "\"",
+			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},

@@ -1,5 +1,5 @@
 {
-	"name": "ImportSTFormatFile_Divert",
+	"name": "ImportSTFormatFolder_Extra",
 	"properties": {
 		"activities": [
 			{
@@ -40,14 +40,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": {
-								"value": "@pipeline().parameters.Directory",
-								"type": "Expression"
-							},
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.File",
-								"type": "Expression"
-							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -62,24 +54,6 @@
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
-					"logSettings": {
-						"enableCopyActivityLog": true,
-						"copyActivityLogSettings": {
-							"logLevel": "Warning",
-							"enableReliableLogging": false
-						},
-						"logLocationSettings": {
-							"linkedServiceName": {
-								"referenceName": "AnyBlobStorage",
-								"type": "LinkedServiceReference",
-								"parameters": {
-									"ConnectionSecret": "StorageAccountConnectionString"
-								}
-							},
-							"path": "output/errors"
-						}
-					},
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
@@ -124,7 +98,7 @@
 					{
 						"activity": "Imported sales data",
 						"dependencyConditions": [
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
@@ -176,7 +150,7 @@
 						},
 						"RunStatus": {
 							"value": {
-								"value": "@if(equals(activity('Imported sales data').output.executionDetails[0].status,'Failed'),'Failed','Done')",
+								"value": "Done",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -257,105 +231,13 @@
 				}
 			},
 			{
-				"name": "If rows skipped",
-				"type": "IfCondition",
+				"name": "Log  pipeline failure",
+				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
 						"activity": "Imported sales data",
 						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@greater(activity('Imported sales data').output.rowsSkipped,0)",
-						"type": "Expression"
-					},
-					"ifTrueActivities": [
-						{
-							"name": "Copy data1",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"wildcardFolderPath": {
-											"value": "@pipeline().parameters.Directory",
-											"type": "Expression"
-										},
-										"wildcardFileName": "*",
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
-								},
-								"sink": {
-									"type": "AzureSqlSink",
-									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false,
-									"disableMetricsCollection": false
-								},
-								"enableStaging": false,
-								"validateDataConsistency": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "ABS_CSV",
-									"type": "DatasetReference",
-									"parameters": {
-										"Container": "output",
-										"Directory": {
-											"value": "@pipeline().parameters.Directory",
-											"type": "Expression"
-										},
-										"File": {
-											"value": "@pipeline().parameters.File",
-											"type": "Expression"
-										},
-										"LinkedServiceConnectionSecret": "StorageAccountConnectionString"
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "SQL_Error",
-									"type": "DatasetReference"
-								}
-							]
-						}
-					]
-				}
-			},
-			{
-				"name": "Log  pipeline outcome_copy1",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "If rows skipped",
-						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
@@ -407,7 +289,7 @@
 						},
 						"RunStatus": {
 							"value": {
-								"value": "@if(equals(activity('Imported sales data').output.executionDetails[0].status,'Failed'),'Failed','Done')",
+								"value": "Failed",
 								"type": "Expression"
 							},
 							"type": "String"
