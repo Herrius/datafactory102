@@ -28,8 +28,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Sales.csv",
-				"folderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
+				"fileName": {
+					"value": "@dataset().File",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
 				"container": {
 					"value": "@dataset().Container",
 					"type": "Expression"

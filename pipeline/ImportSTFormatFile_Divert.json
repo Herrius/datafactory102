@@ -56,7 +56,6 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE dbo.Sales_LOAD",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -118,7 +117,7 @@
 				]
 			},
 			{
-				"name": "Log  pipeline outcome",
+				"name": "Log  pipeline outcome failed",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -261,7 +260,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "Imported sales data",
+						"activity": "Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -346,7 +345,7 @@
 				}
 			},
 			{
-				"name": "Log  pipeline outcome_copy1",
+				"name": "Log  pipeline outcome correct",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -409,6 +408,37 @@
 							},
 							"type": "String"
 						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AdfByExample",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Log",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Imported sales data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.1:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[PersistLoadedSales]",
+					"storedProcedureParameters": {
+						"value": "@variables('RunSeqNo')",
+						"type": "Expression"
 					}
 				},
 				"linkedServiceName": {
