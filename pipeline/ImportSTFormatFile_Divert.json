@@ -94,7 +94,7 @@
 						"referenceName": "ABS_CSV",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": "sampledata",
+							"Container": "out",
 							"Directory": {
 								"value": "@pipeline().parameters.Directory",
 								"type": "Expression"
