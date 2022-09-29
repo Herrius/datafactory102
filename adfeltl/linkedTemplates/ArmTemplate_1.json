@@ -13,7 +13,83 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/ImportSTFormatFile_Divert')]",
+			"name": "[concat(parameters('factoryName'), '/ImportSweetTreatsSales')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE dbo.Sales_LOAD",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ABS_CSV_SweetTreats",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ASQL_dboSalesLoad",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Chapter 3"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ImportSweetTreatsSales_Audit')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -56,14 +132,8 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
+									"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+									"wildcardFileName": "*",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -78,24 +148,6 @@
 								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"logSettings": {
-								"enableCopyActivityLog": true,
-								"copyActivityLogSettings": {
-									"logLevel": "Warning",
-									"enableReliableLogging": false
-								},
-								"logLocationSettings": {
-									"linkedServiceName": {
-										"referenceName": "AnyBlobStorage",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ConnectionSecret": "StorageAccountConnectionString"
-										}
-									},
-									"path": "output/errors"
-								}
-							},
 							"translator": {
 								"type": "TabularTranslator",
 								"typeConversion": true,
@@ -107,23 +159,9 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "ABS_CSV",
+								"referenceName": "ABS_CSV_SweetTreats",
 								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"File": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
-									"LinkedServiceConnectionSecret": {
-										"value": "StorageAccountConnectionString",
-										"type": "Expression"
-									}
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -141,7 +179,7 @@
 							{
 								"activity": "Imported sales data",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -193,7 +231,7 @@
 								},
 								"RunStatus": {
 									"value": {
-										"value": "@if(equals(activity('Imported sales data').output.executionDetails[0].status,'Failed'),'Failed','Done')",
+										"value": "Done",
 										"type": "Expression"
 									},
 									"type": "String"
@@ -225,7 +263,7 @@
 									"Comments": {
 										"type": "String",
 										"value": {
-											"value": "Pipeline @{pipeline().Pipeline} executed in @{pipeline().DataFactory} - loading file \"@{pipeline().parameters.Directory}/@{pipeline().parameters.File}\n",
+											"value": "@concat('Pipeline ',pipeline().Pipeline,' executed in ',pipeline().DataFactory)",
 											"type": "Expression"
 										}
 									},
@@ -279,14 +317,6 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"parameters": {
-					"Directory": {
-						"type": "string"
-					},
-					"File": {
-						"type": "string"
-					}
-				},
 				"variables": {
 					"RunSeqNo": {
 						"type": "String",
@@ -294,9 +324,66 @@
 					}
 				},
 				"folder": {
-					"name": "Chapter 6"
+					"name": "Chapter 4"
 				},
 				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ABS_JSON_adfetl')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AnyBlobStorage",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ConnectionSecret": {
+							"value": "@dataset().LinkedServiceConnectionSecret",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string",
+						"defaultValue": "."
+					},
+					"File": {
+						"type": "string",
+						"defaultValue": "."
+					},
+					"LinkedServiceConnectionSecret": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Chapter 5"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().File",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					}
+				},
+				"schema": {}
 			},
 			"dependsOn": []
 		},
@@ -453,7 +540,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ABS_JSON_adfetl')]"
+			]
 		}
 	]
 }
