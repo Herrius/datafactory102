@@ -30,7 +30,10 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": "Sales.csv",
 				"folderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
-				"container": "out"
+				"container": {
+					"value": "@dataset().Container",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\"",
