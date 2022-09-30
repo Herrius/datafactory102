@@ -28,7 +28,7 @@
 						"referenceName": "ASQL_dboSalesLoad",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "dboSalesLoad"
 				}
 			],
 			"transformations": [
@@ -125,7 +125,7 @@
 				"          SalesValueUSD,",
 				"          UnitsSold,",
 				"          RunSeqNo",
-				"     )) ~> sink1"
+				"     )) ~> dboSalesLoad"
 			]
 		}
 	}
