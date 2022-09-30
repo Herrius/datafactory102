@@ -151,14 +151,14 @@
 						},
 						"RowsCopied": {
 							"value": {
-								"value": "@activity('ETLJollyGoodSales').output.runStatus.dboSalesLoad.recordsWritten",
+								"value": "@activity('ETLJollyGoodSales').output.runStatus.metrics.dboSalesLoad.rowsWritten",
 								"type": "Expression"
 							},
 							"type": "Int32"
 						},
 						"RowsRead": {
 							"value": {
-								"value": "@activity('ETLJollyGoodSales').output.runStatus.dboSalesLoad.recordsRead",
+								"value": "@activity('ETLJollyGoodSales').output.runStatus.metrics.dboSalesLoad.sources.JollyGoodSales.rowsRead",
 								"type": "Expression"
 							},
 							"type": "Int32"
