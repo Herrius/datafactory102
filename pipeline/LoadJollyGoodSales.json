@@ -150,11 +150,17 @@
 							"type": "Int32"
 						},
 						"RowsCopied": {
-							"value": null,
+							"value": {
+								"value": "@activity('ETLJollyGoodSales').output.runStatus.dboSalesLoad.recordsWritten",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						},
 						"RowsRead": {
-							"value": "",
+							"value": {
+								"value": "@activity('ETLJollyGoodSales').output.runStatus.dboSalesLoad.recordsRead",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						},
 						"RunEndDateTime": {
