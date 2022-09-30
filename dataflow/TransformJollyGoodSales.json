@@ -119,13 +119,12 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
+				"          Retailer,",
 				"          SalesMonth,",
 				"          Product,",
-				"          UnitsSold,",
 				"          SalesValueUSD,",
-				"          Retailer,",
-				"          RunSeqNo,",
-				"          {} = SalesMonth",
+				"          UnitsSold,",
+				"          RunSeqNo",
 				"     )) ~> sink1"
 			]
 		}
