@@ -60,7 +60,7 @@
 				"          WeightInGrams = round(toFloat(replace(:WeightString,:WeightUnit,''))/iif(:WeightUnit=='oz',0.0352,1.0)),",
 				"          WeightString := right(Product,locate(' ',reverse(Product))-1),",
 				"          WeightUnit := iif(endsWith(Product,'oz'),'oz','g')) ~> derivedProductsFeatures",
-				"derivedProductsFeatures aggregate(groupBy(ProductName = first(ProductName)),",
+				"derivedProductsFeatures aggregate(groupBy(ProductName),",
 				"     ProductNames = first(ProductName),",
 				"          each(match(startsWith(name, 'Weight')), $$ = first($$))) ~> EliminatedDuplicates"
 			]
