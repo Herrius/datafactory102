@@ -22,13 +22,24 @@
 					"name": "Sales"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Products",
+						"type": "DatasetReference"
+					},
+					"name": "dboProductSink"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedProductsFeatures"
 				},
 				{
 					"name": "EliminatedDuplicates"
+				},
+				{
+					"name": "NewRowsOnly"
 				}
 			],
 			"scriptLines": [
@@ -61,8 +72,27 @@
 				"          WeightString := right(Product,locate(' ',reverse(Product))-1),",
 				"          WeightUnit := iif(endsWith(Product,'oz'),'oz','g')) ~> derivedProductsFeatures",
 				"derivedProductsFeatures aggregate(groupBy(ProductName),",
-				"     ProductNames = first(ProductName),",
-				"          each(match(startsWith(name, 'Weight')), $$ = first($$))) ~> EliminatedDuplicates"
+				"     Product = first(ProductName),",
+				"          each(match(startsWith(name,'Weight')), $$ = first($$))) ~> EliminatedDuplicates",
+				"EliminatedDuplicates, Products exists(EliminatedDuplicates@Product == Products@Product,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> NewRowsOnly",
+				"NewRowsOnly sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Product as string,",
+				"          ProductName as string,",
+				"          WeightInOunces as decimal(19,2),",
+				"          WeightInGrams as decimal(19,2)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> dboProductSink"
 			]
 		}
 	}
