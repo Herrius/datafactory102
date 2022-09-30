@@ -13,15 +13,37 @@
 						"type": "DatasetReference"
 					},
 					"name": "JollyGoodSales"
+				},
+				{
+					"linkedService": {
+						"referenceName": "adfBlob",
+						"type": "LinkedServiceReference"
+					},
+					"name": "ExchangeRates"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "filter1"
+					"name": "ExcludeMonthNull"
+				},
+				{
+					"name": "RateToUSD"
+				},
+				{
+					"name": "LookupExchangeRate"
+				},
+				{
+					"name": "LocalToExchange"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     RunSeqNo as integer (-1)",
+				"}",
 				"source(output(",
 				"          Period as date,",
 				"          Product as string,",
@@ -32,7 +54,41 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> JollyGoodSales",
-				"JollyGoodSales filter(Product != 'Month Total') ~> filter1"
+				"source(output(",
+				"          FromCurrency as string,",
+				"          ToCurrency as string,",
+				"          Date as date,",
+				"          ExchangeRate as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'excel',",
+				"     container: 'out',",
+				"     folderPath: 'azure-data-factory-by-example-main/SampleData',",
+				"     fileName: 'ExchangeRates.xlsx',",
+				"     sheetName: 'Sheet1',",
+				"     firstRowAsHeader: true) ~> ExchangeRates",
+				"JollyGoodSales filter(Product != 'Month Total') ~> ExcludeMonthNull",
+				"ExchangeRates filter(ToCurrency == 'USD') ~> RateToUSD",
+				"ExcludeMonthNull, RateToUSD lookup(Currency == FromCurrency",
+				"     && Period == Date,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LookupExchangeRate",
+				"LookupExchangeRate derive(SalesValueUSD = {Unit Price}*{Units Sold}*ExchangeRate,",
+				"          Retailer = \"Jolly Good Ltd\",",
+				"          RunSeqNo = $RunSeqNo) ~> LocalToExchange",
+				"LocalToExchange select(mapColumn(",
+				"          SalesMonth = Period,",
+				"          Product,",
+				"          UnitsSold = {Units Sold},",
+				"          SalesValueUSD,",
+				"          Retailer,",
+				"          RunSeqNo",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
