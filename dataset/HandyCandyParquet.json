@@ -2,7 +2,7 @@
 	"name": "HandyCandyParquet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AnyBlobStorage",
+			"referenceName": "adfBlob",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
