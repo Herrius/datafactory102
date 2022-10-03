@@ -1,0 +1,20 @@
+{
+	"name": "LocalBinaryToCloud",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServer1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter 8"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "*.md"
+			}
+		}
+	}
+}
