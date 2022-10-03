@@ -2629,14 +2629,60 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/HandyCandyParquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adfBlob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "HandyCandy.parquet",
+						"folderPath": "datalake",
+						"container": "output"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "TransactionId",
+						"type": "UTF8"
+					},
+					{
+						"name": "TransactionDate",
+						"type": "INT96"
+					},
+					{
+						"name": "StoreId",
+						"type": "INT32"
+					},
+					{
+						"name": "Product",
+						"type": "UTF8"
+					},
+					{
+						"name": "Price",
+						"type": "FLOAT"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adfBlob')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LocalBinaryToCloud')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AnyBlobStorage",
-					"type": "LinkedServiceReference",
-					"parameters": {}
+					"type": "LinkedServiceReference"
 				},
 				"folder": {
 					"name": "Chapter 8"
@@ -3314,6 +3360,99 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SqlDynamics')]",
 				"[concat(variables('factoryId'), '/datasets/Products')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HandyCandyView')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"folder": {
+					"name": "Chapter 9"
+				},
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "HandyCandyParquet",
+							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~>  HandyCandyParquet",
+							"dataset": {
+								"referenceName": "HandyCandyParquet",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"script": "section Section1;\r\nshared HandyCandyParquet = let AdfDoc = AzureStorage.BlobContents(\"https://adfblob204.blob.core.windows.net/output/datalake/HandyCandy.parquet\"), Parquet = Parquet.Document(AdfDoc) in Parquet;\r\nshared UserQuery = let Source = #\"HandyCandyParquet\",\r\n  #\"Removed columns\" = Table.RemoveColumns(Source, {\"TransactionId\", \"StoreId\"}),\r\n  #\"Added custom\" = Table.AddColumn(#\"Removed columns\", \"EndOfPreviousMonth\", each Date.AddDays([TransactionDate], -Date.Day([TransactionDate]))),\r\n  #\"Added custom 1\" = Table.AddColumn(#\"Added custom\", \"Custom\", each Date.AddDays([EndOfPreviousMonth], 1)),\r\n  #\"Renamed columns\" = Table.RenameColumns(#\"Added custom 1\", {{\"Custom\", \"SalesMonth\"}}),\r\n  #\"Removed columns 1\" = Table.RemoveColumns(#\"Renamed columns\", {\"EndOfPreviousMonth\", \"TransactionDate\"}),\r\n  #\"Reordered columns\" = Table.ReorderColumns(#\"Removed columns 1\", {\"SalesMonth\", \"Product\", \"Price\"}),\r\n  #\"Added custom 2\" = Table.AddColumn(#\"Reordered columns\", \"ItemCount\", each 1),\r\n  #\"Grouped rows\" = Table.Group(#\"Added custom 2\", {\"SalesMonth\", \"Product\"}, {{\"SalesValueUSD\", each List.Sum([Price]), type nullable number}, {\"UnitsSold\", each List.Sum([ItemCount]), type any}}),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Grouped rows\", {{\"UnitsSold\", Int64.Type}, {\"SalesMonth\", type date}}) in #\"Changed column type\";\r\n",
+					"documentLocale": "en-us"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/HandyCandyParquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adfPowerQueryExample')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Power Query1",
+						"type": "ExecuteWranglingDataflow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.1:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "HandyCandyView",
+								"type": "DataFlowReference",
+								"datasetParameters": {
+									"HandyCandyParquet": {},
+									"UserQueryASQLdboSalesLoad": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"queries": [
+								{
+									"queryName": "UserQuery",
+									"dataflowSinks": [
+										{
+											"name": "UserQueryASQLdboSalesLoad",
+											"dataset": {
+												"referenceName": "ASQL_dboSalesLoad",
+												"type": "DatasetReference",
+												"parameters": {}
+											},
+											"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tRowId as integer,\n\t\tRetailer as string,\n\t\tSalesMonth as date,\n\t\tProduct as string,\n\t\tManufacturerProductCode as string,\n\t\tSalesValueUSD as decimal(18,2),\n\t\tUnitsSold as integer,\n\t\tSourceFileName as string,\n\t\tRunSeqNo as integer\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> UserQueryASQLdboSalesLoad"
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Chapter 9"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/HandyCandyView')]",
+				"[concat(variables('factoryId'), '/datasets/ASQL_dboSalesLoad')]"
 			]
 		}
 	]
