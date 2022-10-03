@@ -31,6 +31,21 @@
 			"type": "string",
 			"defaultValue": "StorageAccountConnectionString"
 		},
+		"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwork"
+		},
+		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"type": "string",
+			"defaultValue": "adfbyexamaple-sql.database.windows.net"
+		},
+		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"type": "string",
+			"defaultValue": "adfbyexample-admin"
+		},
+		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"type": "secureString"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -69,6 +84,18 @@
 					},
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+						"value": "[parameters('SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint')]"
+					},
+					"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+						"value": "[parameters('SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName')]"
+					},
+					"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+						"value": "[parameters('SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
 					},
 					"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('AnyBlobStorage_properties_typeProperties_connectionString_secretName')]"

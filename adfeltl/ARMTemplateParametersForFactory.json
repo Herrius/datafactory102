@@ -22,6 +22,18 @@
 		},
 		"adfbyexamplekv_properties_typeProperties_connectionString_secretName": {
 			"value": "StorageAccountConnectionString"
+		},
+		"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwork"
+		},
+		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"value": "adfbyexamaple-sql.database.windows.net"
+		},
+		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"value": "adfbyexample-admin"
+		},
+		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"value": ""
 		}
 	}
 }
