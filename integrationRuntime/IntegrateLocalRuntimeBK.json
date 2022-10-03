@@ -4,7 +4,7 @@
 		"type": "SelfHosted",
 		"typeProperties": {
 			"linkedInfo": {
-				"resourceId": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwork",
+				"resourceId": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwor",
 				"authorizationType": "Rbac"
 			}
 		}
