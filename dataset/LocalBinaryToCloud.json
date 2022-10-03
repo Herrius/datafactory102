@@ -1,10 +1,19 @@
 {
 	"name": "LocalBinaryToCloud",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AnyBlobStorage",
+			"type": "LinkedServiceReference"
+		},
 		"folder": {
 			"name": "Chapter 8"
 		},
 		"annotations": [],
-		"type": "Binary"
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			}
+		}
 	}
 }

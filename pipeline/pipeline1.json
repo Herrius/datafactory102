@@ -17,6 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
 						}
