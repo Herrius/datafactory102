@@ -1,5 +1,5 @@
 {
-	"name": "powerquery1",
+	"name": "HandyCandyView",
 	"properties": {
 		"type": "WranglingDataFlow",
 		"folder": {
@@ -16,7 +16,7 @@
 					}
 				}
 			],
-			"script": "section Section1;\r\nshared HandyCandyParquet = let AdfDoc = AzureStorage.BlobContents(\"https://adfblob204.blob.core.windows.net/output/datalake/HandyCandy.parquet\"), Parquet = Parquet.Document(AdfDoc) in Parquet;\r\nshared UserQuery = let Source = #\"HandyCandyParquet\",\r\n  #\"Removed columns\" = Table.RemoveColumns(Source, {\"TransactionId\", \"StoreId\"}),\r\n  #\"Added custom\" = Table.AddColumn(#\"Removed columns\", \"EndOfPreviousMonth\", each Date.AddDays([TransactionDate], -Date.Day([TransactionDate]))),\r\n  #\"Removed errors\" = Table.RemoveRowsWithErrors(#\"Added custom\", {\"EndOfPreviousMonth\"}),\r\n  #\"Added custom 1\" = Table.AddColumn(#\"Removed errors\", \"Custom\", each Date.AddDays([EndOfPreviousMonth], 1)),\r\n  #\"Renamed columns\" = Table.RenameColumns(#\"Added custom 1\", {{\"Custom\", \"SalesMonth\"}}),\r\n  #\"Removed columns 1\" = Table.RemoveColumns(#\"Renamed columns\", {\"EndOfPreviousMonth\", \"TransactionDate\"}),\r\n  #\"Reordered columns\" = Table.ReorderColumns(#\"Removed columns 1\", {\"SalesMonth\", \"Product\", \"Price\"}),\r\n  #\"Added custom 2\" = Table.AddColumn(#\"Reordered columns\", \"ItemCount\", each 1),\r\n  #\"Grouped rows\" = Table.Group(#\"Added custom 2\", {\"SalesMonth\", \"Product\"}, {{\"SalesValueUSD\", each List.Sum([Price]), type nullable number}, {\"UnitsSold\", each List.Sum([ItemCount]), type any}}) in #\"Grouped rows\";\r\n",
+			"script": "section Section1;\r\nshared HandyCandyParquet = let AdfDoc = AzureStorage.BlobContents(\"https://adfblob204.blob.core.windows.net/output/datalake/HandyCandy.parquet\"), Parquet = Parquet.Document(AdfDoc) in Parquet;\r\nshared UserQuery = let Source = #\"HandyCandyParquet\",\r\n  #\"Removed columns\" = Table.RemoveColumns(Source, {\"TransactionId\", \"StoreId\"}),\r\n  #\"Added custom\" = Table.AddColumn(#\"Removed columns\", \"EndOfPreviousMonth\", each Date.AddDays([TransactionDate], -Date.Day([TransactionDate]))),\r\n  #\"Removed errors\" = Table.RemoveRowsWithErrors(#\"Added custom\", {\"EndOfPreviousMonth\"}),\r\n  #\"Added custom 1\" = Table.AddColumn(#\"Removed errors\", \"Custom\", each Date.AddDays([EndOfPreviousMonth], 1)),\r\n  #\"Renamed columns\" = Table.RenameColumns(#\"Added custom 1\", {{\"Custom\", \"SalesMonth\"}}),\r\n  #\"Removed columns 1\" = Table.RemoveColumns(#\"Renamed columns\", {\"EndOfPreviousMonth\", \"TransactionDate\"}),\r\n  #\"Reordered columns\" = Table.ReorderColumns(#\"Removed columns 1\", {\"SalesMonth\", \"Product\", \"Price\"}),\r\n  #\"Added custom 2\" = Table.AddColumn(#\"Reordered columns\", \"ItemCount\", each 1),\r\n  #\"Grouped rows\" = Table.Group(#\"Added custom 2\", {\"SalesMonth\", \"Product\"}, {{\"SalesValueUSD\", each List.Sum([Price]), type nullable number}, {\"UnitsSold\", each List.Sum([ItemCount]), type any}}),\r\n  #\"Removed duplicates\" = Table.Distinct(#\"Grouped rows\", {\"SalesValueUSD\"}) in #\"Removed duplicates\";\r\n",
 			"documentLocale": "en-us"
 		}
 	}
