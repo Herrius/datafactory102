@@ -17,11 +17,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "BinarySource",
-						"storeSettings": {
-							"type": "FileServerReadSettings",
-							"recursive": true,
-							"deleteFilesAfterCompletion": false
-						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
 						}
