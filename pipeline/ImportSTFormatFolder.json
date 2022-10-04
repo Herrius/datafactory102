@@ -170,7 +170,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[LogPipelineStart]",
 						"storedProcedureParameters": {
 							"Comments": {
 								"type": "String",
