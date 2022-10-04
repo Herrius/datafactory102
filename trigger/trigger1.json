@@ -1,0 +1,18 @@
+{
+	"name": "trigger1",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/out/blobs/azure-data-factory-by-example-main/SampleData/JustOneMore/SalesData",
+			"blobPathEndsWith": ".txt",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
