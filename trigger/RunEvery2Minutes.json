@@ -13,6 +13,12 @@
 					"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
 					"WildcardFileName": "*.csv"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "ImportSugarCubeSales",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
@@ -20,8 +26,8 @@
 			"recurrence": {
 				"frequency": "Minute",
 				"interval": 2,
-				"startTime": "2022-10-04T10:00:00",
-				"endTime": "2022-10-04T10:10:00",
+				"startTime": "2022-10-04T11:14:00",
+				"endTime": "2022-10-04T12:00:00",
 				"timeZone": "SA Pacific Standard Time"
 			}
 		}
