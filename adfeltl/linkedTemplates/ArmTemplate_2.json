@@ -22,6 +22,14 @@
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
+		},
+		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
+			"type": "string",
+			"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+		},
+		"RunEvery8Minutes_properties_pipeline_parameters_File": {
+			"type": "string",
+			"defaultValue": "NBN-202006.csv"
 		}
 	},
 	"variables": {
@@ -486,6 +494,38 @@
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RunEvery8Minutes')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "ImportSTFormatFile",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"Directory": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_Directory')]",
+						"File": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_File')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 8,
+					"startTime": "2022-10-04T16:11:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
 				}
 			},
 			"dependsOn": []
