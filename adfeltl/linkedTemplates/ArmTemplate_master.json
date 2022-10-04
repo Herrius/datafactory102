@@ -31,9 +31,17 @@
 			"type": "string",
 			"defaultValue": "StorageAccountConnectionString"
 		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+			"type": "string",
+			"defaultValue": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+			"type": "string",
+			"defaultValue": "*.csv"
+		},
 		"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
-			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwork"
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/DataFactoryChapter11/integrationruntimes/integrationRuntime1"
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"type": "string",
@@ -45,6 +53,10 @@
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
 		},
 		"containerUri": {
 			"type": "string",
@@ -97,8 +109,8 @@
 					"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 						"value": "[parameters('SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
 					},
-					"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('AnyBlobStorage_properties_typeProperties_connectionString_secretName')]"
+					"trigger1_properties_typeProperties_scope": {
+						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -118,6 +130,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AnyBlobStorage_properties_typeProperties_connectionString_secretName')]"
+					},
 					"adfbyexamplekv_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('adfbyexamplekv_properties_typeProperties_connectionString_secretName')]"
 					}
@@ -125,6 +140,32 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'adfeltl_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adfeltl_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath')]"
+					},
+					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfeltl_ArmTemplate_1')]"
 			]
 		}
 	]

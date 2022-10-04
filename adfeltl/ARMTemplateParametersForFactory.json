@@ -23,8 +23,14 @@
 		"adfbyexamplekv_properties_typeProperties_connectionString_secretName": {
 			"value": "StorageAccountConnectionString"
 		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+			"value": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+			"value": "*.csv"
+		},
 		"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
-			"value": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwork"
+			"value": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/DataFactoryChapter11/integrationruntimes/integrationRuntime1"
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"value": "adfbyexamaple-sql.database.windows.net"
@@ -34,6 +40,9 @@
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"value": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
 		}
 	}
 }

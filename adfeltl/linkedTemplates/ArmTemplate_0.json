@@ -25,7 +25,7 @@
 		},
 		"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
-			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/datafactorybackupI/integrationruntimes/integrationPrivateNetwork"
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourcegroups/adfresource/providers/Microsoft.DataFactory/factories/DataFactoryChapter11/integrationruntimes/integrationRuntime1"
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"type": "string",
@@ -38,15 +38,22 @@
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
 		},
-		"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
-			"defaultValue": "@linkedService().ConnectionSecret"
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SophisticatedControl')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -237,6 +244,27 @@
 						"edition": "Standard",
 						"licenseType": "BasePrice"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/out/blobs/azure-data-factory-by-example-main/SampleData/JustOneMore/SalesData",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
 				}
 			},
 			"dependsOn": []
@@ -782,87 +810,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AdfByExample')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/XLSX_JollyGood')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "adfBlob",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter 7"
-				},
-				"annotations": [],
-				"type": "Excel",
-				"typeProperties": {
-					"sheetName": "SALES",
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Sales Apr-Sep 2020.xlsx",
-						"folderPath": "azure-data-factory-by-example-main/SampleData/JollyGood",
-						"container": "out"
-					},
-					"firstRowAsHeader": true
-				},
-				"schema": [
-					{
-						"name": "Period",
-						"type": "String"
-					},
-					{
-						"name": "Product",
-						"type": "String"
-					},
-					{
-						"name": "Unit Price",
-						"type": "String"
-					},
-					{
-						"name": "Currency",
-						"type": "String"
-					},
-					{
-						"name": "Units Sold",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/adfBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AnyBlobStorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"ConnectionSecret": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault1",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": {
-							"value": "[parameters('AnyBlobStorage_properties_typeProperties_connectionString_secretName')]",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
 			]
 		}
 	]
