@@ -47,6 +47,14 @@
 			"type": "string",
 			"defaultValue": "*.csv"
 		},
+		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
+			"type": "string",
+			"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+		},
+		"RunEvery8Minutes_properties_pipeline_parameters_File": {
+			"type": "string",
+			"defaultValue": "NBN-202006.csv"
+		},
 		"trigger1_properties_ImportSTFormatFile_parameters_File": {
 			"type": "string",
 			"defaultValue": "*.txt"
@@ -69,14 +77,6 @@
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
-		},
-		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
-			"type": "string",
-			"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
-		},
-		"RunEvery8Minutes_properties_pipeline_parameters_File": {
-			"type": "string",
-			"defaultValue": "NBN-202006.csv"
 		}
 	},
 	"variables": {
@@ -1198,30 +1198,6 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ',pipeline().Pipeline,' executed in ',pipeline().DataFactory)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -3386,6 +3362,40 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RunEvery8Minutes')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "ImportSTFormatFile",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"Directory": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_Directory')]",
+						"File": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_File')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 8,
+					"startTime": "2022-10-04T16:11:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFile')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/trigger1')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -3733,40 +3743,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SqlDynamics')]",
 				"[concat(variables('factoryId'), '/datasets/Products')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/RunEvery8Minutes')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "ImportSTFormatFile",
-						"type": "PipelineReference"
-					},
-					"parameters": {
-						"Directory": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_Directory')]",
-						"File": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_File')]"
-					}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 8,
-					"startTime": "2022-10-04T16:11:00Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFile')]"
 			]
 		},
 		{

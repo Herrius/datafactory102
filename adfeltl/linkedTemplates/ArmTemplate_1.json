@@ -1087,30 +1087,6 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ',pipeline().Pipeline,' executed in ',pipeline().DataFactory)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},

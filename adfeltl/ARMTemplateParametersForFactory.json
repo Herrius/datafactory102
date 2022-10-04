@@ -35,6 +35,12 @@
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
 			"value": "*.csv"
 		},
+		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
+			"value": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+		},
+		"RunEvery8Minutes_properties_pipeline_parameters_File": {
+			"value": "NBN-202006.csv"
+		},
 		"trigger1_properties_ImportSTFormatFile_parameters_File": {
 			"value": "*.txt"
 		},
@@ -52,12 +58,6 @@
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""
-		},
-		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
-			"value": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
-		},
-		"RunEvery8Minutes_properties_pipeline_parameters_File": {
-			"value": "NBN-202006.csv"
 		}
 	}
 }

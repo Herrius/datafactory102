@@ -15,14 +15,6 @@
 			"type": "string",
 			"defaultValue": "*.csv"
 		},
-		"trigger1_properties_ImportSTFormatFile_parameters_File": {
-			"type": "string",
-			"defaultValue": "*.txt"
-		},
-		"trigger1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
-		},
 		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
 			"type": "string",
 			"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
@@ -30,6 +22,14 @@
 		"RunEvery8Minutes_properties_pipeline_parameters_File": {
 			"type": "string",
 			"defaultValue": "NBN-202006.csv"
+		},
+		"trigger1_properties_ImportSTFormatFile_parameters_File": {
+			"type": "string",
+			"defaultValue": "*.txt"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
 		}
 	},
 	"variables": {
@@ -468,37 +468,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "ImportSTFormatFile",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"File": "[parameters('trigger1_properties_ImportSTFormatFile_parameters_File')]"
-						}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/out/blobs/azure-data-factory-by-example-main/SampleData/JustOneMore/SalesData",
-					"blobPathEndsWith": ".txt",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/RunEvery8Minutes')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -526,6 +495,37 @@
 						"intervalInSeconds": 30
 					},
 					"dependsOn": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ImportSTFormatFile",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"File": "[parameters('trigger1_properties_ImportSTFormatFile_parameters_File')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/out/blobs/azure-data-factory-by-example-main/SampleData/JustOneMore/SalesData",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
 				}
 			},
 			"dependsOn": []

@@ -47,6 +47,14 @@
 			"type": "string",
 			"defaultValue": "*.csv"
 		},
+		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
+			"type": "string",
+			"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+		},
+		"RunEvery8Minutes_properties_pipeline_parameters_File": {
+			"type": "string",
+			"defaultValue": "NBN-202006.csv"
+		},
 		"trigger1_properties_ImportSTFormatFile_parameters_File": {
 			"type": "string",
 			"defaultValue": "*.txt"
@@ -69,14 +77,6 @@
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
-		},
-		"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
-			"type": "string",
-			"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
-		},
-		"RunEvery8Minutes_properties_pipeline_parameters_File": {
-			"type": "string",
-			"defaultValue": "NBN-202006.csv"
 		},
 		"containerUri": {
 			"type": "string",
@@ -185,17 +185,17 @@
 					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
 						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]"
 					},
-					"trigger1_properties_ImportSTFormatFile_parameters_File": {
-						"value": "[parameters('trigger1_properties_ImportSTFormatFile_parameters_File')]"
-					},
-					"trigger1_properties_typeProperties_scope": {
-						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
-					},
 					"RunEvery8Minutes_properties_pipeline_parameters_Directory": {
 						"value": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_Directory')]"
 					},
 					"RunEvery8Minutes_properties_pipeline_parameters_File": {
 						"value": "[parameters('RunEvery8Minutes_properties_pipeline_parameters_File')]"
+					},
+					"trigger1_properties_ImportSTFormatFile_parameters_File": {
+						"value": "[parameters('trigger1_properties_ImportSTFormatFile_parameters_File')]"
+					},
+					"trigger1_properties_typeProperties_scope": {
+						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
 					}
 				}
 			},
