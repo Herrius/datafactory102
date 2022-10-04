@@ -3,15 +3,6 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipeline": {
-			"pipelineReference": {
-				"referenceName": "ImportSTFormatFiles",
-				"type": "PipelineReference"
-			},
-			"parameters": {
-				"FolderPath": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
-			}
-		},
 		"type": "TumblingWindowTrigger",
 		"typeProperties": {
 			"frequency": "Minute",
