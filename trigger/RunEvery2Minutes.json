@@ -3,7 +3,18 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "ImportSTFormatFolder",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+					"WildcardFileName": "*.csv"
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
