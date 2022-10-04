@@ -31,6 +31,14 @@
 			"type": "string",
 			"defaultValue": "StorageAccountConnectionString"
 		},
+		"IngestHandyCandyWindow_properties_pipeline_parameters_WindowStartUTC": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
+		},
+		"IngestHandyCandyWindow_properties_pipeline_parameters_WindowEndUTC": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
 			"type": "string",
 			"defaultValue": "azure-data-factory-by-example-main/SampleData/Desserts4All"
@@ -38,6 +46,14 @@
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
 			"type": "string",
 			"defaultValue": "*.csv"
+		},
+		"trigger1_properties_ImportSTFormatFile_parameters_File": {
+			"type": "string",
+			"defaultValue": "*.txt"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
 		},
 		"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -53,10 +69,6 @@
 		},
 		"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
-		},
-		"trigger1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/5f0ac9f3-0e7f-4260-bd35-10a16c7463f3/resourceGroups/adfresource/providers/Microsoft.Storage/storageAccounts/adfblob204"
 		},
 		"containerUri": {
 			"type": "string",
@@ -97,6 +109,12 @@
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
 					},
+					"IngestHandyCandyWindow_properties_pipeline_parameters_WindowStartUTC": {
+						"value": "[parameters('IngestHandyCandyWindow_properties_pipeline_parameters_WindowStartUTC')]"
+					},
+					"IngestHandyCandyWindow_properties_pipeline_parameters_WindowEndUTC": {
+						"value": "[parameters('IngestHandyCandyWindow_properties_pipeline_parameters_WindowEndUTC')]"
+					},
 					"IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('IntegrateLocalRuntimeBK_properties_typeProperties_linkedInfo_resourceId')]"
 					},
@@ -108,9 +126,6 @@
 					},
 					"SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 						"value": "[parameters('SSISIntegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
-					},
-					"trigger1_properties_typeProperties_scope": {
-						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -161,6 +176,12 @@
 					},
 					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
 						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]"
+					},
+					"trigger1_properties_ImportSTFormatFile_parameters_File": {
+						"value": "[parameters('trigger1_properties_ImportSTFormatFile_parameters_File')]"
+					},
+					"trigger1_properties_typeProperties_scope": {
+						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
 					}
 				}
 			},
