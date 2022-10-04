@@ -2,7 +2,7 @@
 	"name": "RunEvery8Minutes",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipeline": {
 			"pipelineReference": {
 				"referenceName": "ImportSTFormatFile",
