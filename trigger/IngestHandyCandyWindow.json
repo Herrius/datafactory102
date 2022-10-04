@@ -1,0 +1,29 @@
+{
+	"name": "IngestHandyCandyWindow",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "IngestHandyCandyWindow",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"WindowStartUTC": "@trigger().outputs.windowStartTime",
+				"WindowEndUTC": "@trigger().outputs.windowEndTime"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 5,
+			"startTime": "2022-10-04T15:40:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
