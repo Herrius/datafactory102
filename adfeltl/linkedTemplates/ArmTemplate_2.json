@@ -426,7 +426,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -437,6 +437,13 @@
 							"WildcardFolderPath": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath')]",
 							"WildcardFileName": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]"
 						}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "ImportSugarCubeSales",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -444,8 +451,8 @@
 					"recurrence": {
 						"frequency": "Minute",
 						"interval": 2,
-						"startTime": "2022-10-04T10:00:00",
-						"endTime": "2022-10-04T10:10:00",
+						"startTime": "2022-10-04T11:14:00",
+						"endTime": "2022-10-04T12:00:00",
 						"timeZone": "SA Pacific Standard Time"
 					}
 				}
@@ -458,7 +465,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
