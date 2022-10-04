@@ -1,0 +1,99 @@
+{
+	"name": "IngestHandyCandyWindow",
+	"properties": {
+		"activities": [
+			{
+				"name": "ImportSugarCubesSales",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.1:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"modifiedDatetimeStart": {
+								"value": "@pipeline().parameters.WindowStartUTC",
+								"type": "Expression"
+							},
+							"modifiedDatetimeEnd": {
+								"value": "@pipeline().parameters.WindowEndUTC",
+								"type": "Expression"
+							},
+							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/HandyCandy/Subset1",
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Month']"
+								},
+								"sink": {
+									"name": "SalesMonth",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company']"
+								},
+								"sink": {
+									"name": "ManufacturerProductCode",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": false
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ABS_JSON_SugarCube",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ASQL_dboSalesLoad",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"WindowStartUTC": {
+				"type": "string"
+			},
+			"WindowEndUTC": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Chapter 11"
+		},
+		"annotations": []
+	}
+}
