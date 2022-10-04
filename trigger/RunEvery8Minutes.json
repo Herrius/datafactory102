@@ -1,0 +1,28 @@
+{
+	"name": "RunEvery8Minutes",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "ImportSTFormatFiles",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"FolderPath": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 8,
+			"startTime": "2022-10-04T16:11:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
