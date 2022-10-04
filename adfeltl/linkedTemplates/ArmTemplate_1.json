@@ -1164,7 +1164,12 @@
 				"folder": {
 					"name": "Chapter 5"
 				},
-				"annotations": []
+				"annotations": [
+					"copia de datos",
+					"csv a sql",
+					"Source",
+					"Destination"
+				]
 			},
 			"dependsOn": []
 		},
