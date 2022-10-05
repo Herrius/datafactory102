@@ -1,0 +1,9 @@
+{
+	"name": "eeup102-df",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0aaaac93-daf7-4c01-84f2-a179d44ec80c",
+		"tenantId": "7da50ca3-1f41-41b7-8355-148079fae2dc"
+	}
+}
